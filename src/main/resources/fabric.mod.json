@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "improved_anvils",
+  "version": "${version}",
+  "name": "Improved Anvils",
+  "description": "",
+  "authors": [
+    "DavidJMacDonald"
+  ],
+  "contact": {
+    "repo": "https://gitlab.com/davidjmacdonald1/improved-anvils.git"
+  },
+  "license": "MIT",
+  "icon": "assets/improved_anvils/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.davidjmacdonald.improved_anvils.ImprovedAnvils"
+    ],
+    "client": [
+      "com.davidjmacdonald.improved_anvils.ImprovedAnvilsClient"
+    ]
+  },
+  "mixins": [
+    "improved_anvils.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
