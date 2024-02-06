@@ -108,11 +108,13 @@ public class ImprovedEnchants {
             this.incompatibleSet.addAll(getIncompatibilitySet(enchant));
         } else {
             int oldLevel = this.enchants.get(enchant);
-            if (oldLevel != level || oldLevel >= enchant.getMaxLevel()) {
+            if (oldLevel > level || oldLevel >= enchant.getMaxLevel()) {
                 return 0;
             }
 
-            level++;
+            if (level == oldLevel) {
+                level++;
+            }
         }
 
         this.enchants.put(enchant, level);
