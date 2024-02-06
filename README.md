@@ -13,7 +13,7 @@ The Fabric API is required.
 
 ## Purpose
 
-Anvils in vanilla Minecraft are plagued with two main issues:
+Anvils in vanilla Minecraft are plagued with a few issues:
 
 1. Each time an item is repaired or enchanted using an anvil,
    the cost of the next anvil usage for that item goes up exponentially.
