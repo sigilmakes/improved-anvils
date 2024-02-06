@@ -10,6 +10,6 @@ public class ImprovedAnvils implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Hello World!");
+        LOGGER.info("Starting Improved Anvils");
     }
 }
