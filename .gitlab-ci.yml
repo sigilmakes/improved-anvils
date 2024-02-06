@@ -17,7 +17,7 @@ build:
   script:
     - chmod +x ./gradlew
     - ./gradlew build
-    - cp build/libs/*.jar ${APP_NAME}
+    - cp $(find build/libs -name "*.jar" -print -quit) ${APP_NAME}
   artifacts:
     paths:
       - ${APP_NAME}
