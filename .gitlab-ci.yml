@@ -1,0 +1,48 @@
+stages:
+  - build
+  - upload
+  - release
+
+variables:
+  REPO_NAME: "improved-anvils"
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${REPO_NAME}"
+  APP_NAME: "improved-anvils-${CI_COMMIT_TAG}"
+  APP_URL: "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/${APP_NAME}"
+
+build:
+  only:
+    - /^v\d+\.\d+\.\d+.*$/
+  stage: build
+  image: gradle:alpine
+  script:
+    - GRADLE_USER_HOME="$(pwd)/.gradle"
+    - export GRADLE_USER_HOME
+    - ./gradlew build
+    - cp build/libs/*.jar ${APP_NAME}
+  artifacts:
+    paths:
+      - ${APP_NAME}
+
+upload:
+  only:
+    - /^v\d+\.\d+\.\d+.*$/
+  stage: upload
+  script:
+    - echo "Uploading ${APP_NAME} to ${APP_URL}..."
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ${APP_NAME} "${APP_URL}"
+
+release:
+  only:
+    - /^v\d+\.\d+\.\d+.*$/
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - echo "Creating release from ${CI_COMMIT_TAG}..."
+  release:
+    tag_name: "${CI_COMMIT_TAG}"
+    description: "Release: ${CI_COMMIT_TAG}"
+    assets:
+      links:
+        - name: "${APP_NAME}"
+          url: "${APP_URL}"
