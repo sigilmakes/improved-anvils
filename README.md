@@ -65,6 +65,35 @@ This mod seeks to fix these issues.
 - Renaming simply costs 1 level.
 - Renaming will no longer allow you to delete an item while getting nothing from it.
 
+## Balance
+
+The overall cost of enchantments may change with suggestions;
+they may seem too high at first glance.
+Try it out, and let me know if you think they should be changed.
+Personally, I find the grind of getting max gear to be the best part of the game,
+so I don't mind slowing it down.
+
+Also, realize that enchanting with low level enchantments is actually useful now.
+You can put Fortune I on a pickaxe and upgrade all the way to Fortune III without increasing the next enchantment cost.
+
+I chose these levels based on units of zombies.
+Killing an adult zombie in normal mode without armor or tools drops 5 xp.
+To reach level 20, our max individual enchantment cost, would require killing 110 zombies.
+To reach level 8, you would have to kill 23 zombies.
+Looking at an enchantment this way makes it seem not too crazy when you consider the power of enchanting.
+Of course, the issue is that this is to reach a level from level 0.
+
+This is the last problem with the current system: high levels.
+Performing a level 10 enchant at level 50 costs 15x as much xp as a level 10 enchant at level 10.
+I am considering scaling the level cost so that at higher levels, you spend much less.
+The issue is, many enchants would turn into 1 level, and 1 level would often be too much xp anyway.
+I could make it based on points rather than levels, but that may be too much.
+
+I was also limited to using integers for the cost per tier.
+For 5 tier enchantments, an increase of 1 level per tier is an increase of 5 levels for the max tier.
+I considered making the level cost a float like 1.5, but that would produce weird rounding:
+tier I, 2 levels; tier II, 4 levels; tier III, 7 levels.
+
 ## Credit
 
 This mod was heavily inspired by [AnvilFix](https://github.com/googleooer/AnvilFix).
