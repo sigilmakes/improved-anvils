@@ -34,21 +34,23 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
      */
     @Overwrite
     public void drawForeground(DrawContext context, int mouseX, int mouseY) {
-        super.drawForeground(context, mouseX, mouseY);
-        var handler = (AnvilScreenHandler) this.handler;
+        var title = Text.translatable("container.improved_anvils.repair", this.player.totalExperience);
+        context.drawText(this.textRenderer, title, this.titleX, this.titleY, 0x404040, false);
+        context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX, this.playerInventoryTitleY, 0x404040, false);
 
+        var handler = (AnvilScreenHandler) this.handler;
         var cost = handler.getLevelCost();
+
         var result = handler.getSlot(2);
         if (cost <= 0 || !result.hasStack()) {
             return;
         }
 
-        Text text = Text.translatable("container.repair.cost", cost);
+        var text = Text.translatable("container.improved_anvils.repair.cost", cost);
         var j = !result.canTakeItems(this.player) ? 0xFF6060 : 8453920;
         var k = this.backgroundWidth - 8 - this.textRenderer.getWidth(text) - 2;
 
         context.fill(k - 2, 67, this.backgroundWidth - 8, 79, 0x4F000000);
         context.drawTextWithShadow(this.textRenderer, text, k, 69, j);
-
     }
 }
