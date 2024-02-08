@@ -3,12 +3,14 @@
   "id": "improved_anvils",
   "version": "${version}",
   "name": "Improved Anvils",
-  "description": "",
+  "description": "Removes \"TOO EXPENSIVE\" and re-balances enchantment/repair costs of anvils.",
   "authors": [
     "DavidJMacDonald"
   ],
   "contact": {
-    "repo": "https://gitlab.com/davidjmacdonald1/improved-anvils.git"
+    "homepage": "https://modrinth.com/project/improved-anvils",
+    "sources": "https://gitlab.com/davidjmacdonald1/improved-anvils",
+    "issues": "https://gitlab.com/davidjmacdonald1/improved-anvils/-/issues"
   },
   "license": "MIT",
   "icon": "assets/improved_anvils/icon.png",

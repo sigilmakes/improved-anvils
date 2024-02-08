@@ -1,6 +1,6 @@
 # Improved Anvils
 
-Removes "TOO EXPENSIVE" and re-balances enchantment and repair costs.
+Removes "TOO EXPENSIVE" and re-balances enchantment/repair costs of anvils.
 
 ## Installation
 
