@@ -1,5 +1,6 @@
 package com.davidjmacdonald.improved_anvils;
 
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -42,7 +43,7 @@ public class ImprovedEnchants {
         putEnchant(Enchantments.LOYALTY, 350);
         putEnchant(Enchantments.RESPIRATION, 350);
         putEnchant(Enchantments.QUICK_CHARGE, 350);
-        putEnchant(Enchantments.SWEEPING, 350);
+        putEnchant(Enchantments.SWEEPING_EDGE, 350);
         putEnchant(Enchantments.THORNS, 300);
         putEnchant(Enchantments.LUCK_OF_THE_SEA, 300);
         putEnchant(Enchantments.LURE, 300);
@@ -68,40 +69,44 @@ public class ImprovedEnchants {
         return MAX_COSTS.getOrDefault(e, 300) * level / e.getMaxLevel();
     }
 
-    private final Map<Enchantment, Integer> enchants;
+    private final ItemEnchantmentsComponent.Builder enchants;
 
     public ImprovedEnchants(ItemStack item) {
-        this.enchants = new HashMap<>(EnchantmentHelper.get(item));
+        this.enchants = new ItemEnchantmentsComponent.Builder(EnchantmentHelper.getEnchantments(item));
     }
 
     public int add(Enchantment enchant, int level) {
         var cost = getCost(enchant, level);
+        var oldLevel = this.enchants.getLevel(enchant);
 
-        if (!this.enchants.containsKey(enchant)) {
+        if (oldLevel < 1) {
             if (!canAdd(enchant)) {
                 return 0;
             }
 
-            this.enchants.put(enchant, level);
+            this.enchants.set(enchant, level);
             return cost;
         }
 
-        int oldLevel = this.enchants.get(enchant);
         if (oldLevel > level || oldLevel >= enchant.getMaxLevel()) {
             return 0;
         }
 
-        this.enchants.put(enchant, level + ((level == oldLevel) ? 1 : 0));
+        this.enchants.set(enchant, level + ((level == oldLevel) ? 1 : 0));
         return cost;
     }
 
-    public void set(ItemStack item) {
-        EnchantmentHelper.set(this.enchants, item);
+    public boolean has(Enchantment e) {
+        return this.enchants.getLevel(e) > 0;
+    }
+
+    public void setEnchantments(ItemStack item) {
+        EnchantmentHelper.set(item, this.enchants.build());
     }
 
     private boolean canAdd(Enchantment e2) {
-        for (var e1 : this.enchants.keySet()) {
-            if (!e1.canCombine(e2)) {
+        for (var e1 : this.enchants.getEnchantments()) {
+            if (!e1.value().canCombine(e2)) {
                 return false;
             }
         }

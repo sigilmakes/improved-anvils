@@ -32,10 +32,6 @@ combining low level enchantments together are functionally useless,
 as you quickly approach the "TOO EXPENSIVE" cap with half-enchanted gear.
 They also encourage or force the use of Mending, which is already overpowered.
 
-There is also, what can only be described as, a bug in vanilla.
-The game will prevent you from combining two items that cannot be combined;
-however, it will gladly allow you to rename the first item, destroying the second.
-
 This mod seeks to fix these issues.
 
 ## Changes
@@ -89,7 +85,6 @@ This mod seeks to fix these issues.
 ### Renaming Items
 
 - Renaming simply costs 1 XP.
-- Renaming will no longer allow you to delete an item while getting nothing from it.
 
 ## Credit
 

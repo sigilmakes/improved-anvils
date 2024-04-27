@@ -4,6 +4,7 @@ import com.davidjmacdonald.improved_anvils.ImprovedEnchants;
 import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,11 +14,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.*;
-import net.minecraft.text.Text;
+import net.minecraft.util.StringHelper;
 import net.minecraft.world.WorldEvents;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Set;
 
@@ -56,7 +59,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     @Overwrite
     public boolean canTakeOutput(PlayerEntity player, boolean present) {
         var cost = this.levelCost.get();
-        return cost > 0 && (player.getAbilities().creativeMode || player.totalExperience >= cost);
+        return cost > 0 && (player.isInCreativeMode() || player.totalExperience >= cost);
     }
 
     /**
@@ -83,7 +86,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         this.levelCost.set(0);
         this.context.run((world, pos) -> {
             BlockState blockState = world.getBlockState(pos);
-            if (!player.getAbilities().creativeMode && blockState.isIn(BlockTags.ANVIL) && player.getRandom().nextFloat() < 0.12f) {
+            if (!player.isInCreativeMode() && blockState.isIn(BlockTags.ANVIL) && player.getRandom().nextFloat() < 0.12f) {
                 BlockState blockState2 = AnvilBlock.getLandingState(blockState);
                 if (blockState2 == null) {
                     world.removeBlock(pos, false);
@@ -98,21 +101,24 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         });
     }
 
-    /**
-     * @author DavidJMacDonald
-     * @reason To change anvil behavior
-     */
-    @Overwrite
-    public void updateResult() {
+    @Inject(method = "updateResult", at = @At("HEAD"), cancellable = true)
+    public void updateResult(CallbackInfo ci) {
         var input = this.input.getStack(0);
         if (input.isEmpty()) {
-            this.output.setStack(0, ItemStack.EMPTY);
             this.levelCost.set(0);
+            this.output.setStack(0, ItemStack.EMPTY);
+            this.sendContentUpdates();
             return;
         }
 
+        var customName = DataComponentTypes.CUSTOM_NAME;
         var item = input.copy();
-        var totalCost = renameItem(item);
+        item.set(customName, this.output.getStack(0).get(customName));
+
+        var totalCost = 0;
+        if (StringHelper.isBlank(this.newItemName)) {
+            if (input.get(customName) != null) totalCost++;
+        } else if (!input.getName().getString().equals(this.newItemName)) totalCost++;
 
         var modifier = this.input.getStack(1);
         if (!modifier.isEmpty()) {
@@ -127,27 +133,8 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         this.levelCost.set(totalCost);
         this.output.setStack(0, item);
         this.sendContentUpdates();
-    }
 
-    @Unique
-    private int renameItem(ItemStack item) {
-        var renameCost = 1;
-
-        if (this.newItemName == null || StringUtils.isBlank(this.newItemName)) {
-            if (item.hasCustomName()) {
-                item.removeCustomName();
-                return renameCost;
-            }
-
-            return 0;
-        }
-
-        if (this.newItemName.equals(item.getName().getString())) {
-            return 0;
-        }
-
-        item.setCustomName(Text.literal(this.newItemName));
-        return renameCost;
+        ci.cancel();
     }
 
     @Unique
@@ -255,7 +242,8 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 
     @Unique
     private boolean isItemInfinityBow(ItemStack item) {
-        return item.isOf(Items.BOW) && EnchantmentHelper.get(item).containsKey(Enchantments.INFINITY);
+        var enchants = new ImprovedEnchants(item);
+        return item.isOf(Items.BOW) && enchants.has(Enchantments.INFINITY);
     }
 
     @Unique
@@ -264,16 +252,17 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var isBook = item.isOf(Items.ENCHANTED_BOOK);
         var totalCost = 0;
 
-        for (var entry : EnchantmentHelper.get(modifier).entrySet()) {
-            var enchant = entry.getKey();
+        var modifierEnchants = EnchantmentHelper.getEnchantments(modifier);
+        for (var registry : modifierEnchants.getEnchantments()) {
+            var enchant = registry.value();
             if (!isBook && !enchant.isAcceptableItem(item)) {
                 continue;
             }
 
-            totalCost += enchants.add(enchant, entry.getValue());
+            totalCost += enchants.add(enchant, modifierEnchants.getLevel(enchant));
         }
 
-        enchants.set(item);
+        enchants.setEnchantments(item);
         return totalCost;
     }
 
