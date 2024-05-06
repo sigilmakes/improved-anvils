@@ -18,6 +18,9 @@ import net.minecraft.world.WorldEvents;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Set;
 
@@ -98,12 +101,8 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         });
     }
 
-    /**
-     * @author DavidJMacDonald
-     * @reason To change anvil behavior
-     */
-    @Overwrite
-    public void updateResult() {
+    @Inject(method = "updateResult", at = @At("HEAD"), cancellable = true)
+    public void updateResult(CallbackInfo ci) {
         var input = this.input.getStack(0);
         if (input.isEmpty()) {
             this.output.setStack(0, ItemStack.EMPTY);
@@ -127,6 +126,8 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         this.levelCost.set(totalCost);
         this.output.setStack(0, item);
         this.sendContentUpdates();
+
+        ci.cancel();
     }
 
     @Unique
