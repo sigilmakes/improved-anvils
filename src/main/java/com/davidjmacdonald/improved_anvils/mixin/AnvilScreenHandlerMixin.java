@@ -62,12 +62,8 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         return cost > 0 && (player.isInCreativeMode() || player.totalExperience >= cost);
     }
 
-    /**
-     * @author DavidJMacDonald
-     * @reason To change anvil cost to points instead of levels
-     */
-    @Overwrite
-    public void onTakeOutput(PlayerEntity player, ItemStack stack) {
+    @Inject(method = "onTakeOutput", at = @At("HEAD"), cancellable = true)
+    public void onTakeOutput(PlayerEntity player, ItemStack stack, CallbackInfo ci) {
         if (!player.getAbilities().creativeMode) {
             player.addExperience(-this.levelCost.get());
         }
@@ -99,6 +95,8 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
                 world.syncWorldEvent(WorldEvents.ANVIL_USED, pos, 0);
             }
         });
+
+        ci.cancel();
     }
 
     @Inject(method = "updateResult", at = @At("HEAD"), cancellable = true)
