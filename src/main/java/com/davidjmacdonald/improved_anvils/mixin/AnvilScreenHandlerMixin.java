@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.*;
+import net.minecraft.text.Text;
 import net.minecraft.util.StringHelper;
 import net.minecraft.world.WorldEvents;
 import org.jetbrains.annotations.Nullable;
@@ -109,14 +110,17 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
             return;
         }
 
-        var customName = DataComponentTypes.CUSTOM_NAME;
-        var item = input.copy();
-        item.set(customName, this.output.getStack(0).get(customName));
-
         var totalCost = 0;
-        if (StringHelper.isBlank(this.newItemName)) {
-            if (input.get(customName) != null) totalCost++;
-        } else if (!input.getName().getString().equals(this.newItemName)) totalCost++;
+        var item = input.copy();
+        if (this.newItemName != null && !StringHelper.isBlank(this.newItemName)) {
+            if (!this.newItemName.equals(input.getName().getString())) {
+                totalCost++;
+                item.set(DataComponentTypes.CUSTOM_NAME, Text.literal(this.newItemName));
+            }
+        } else if (input.contains(DataComponentTypes.CUSTOM_NAME)) {
+            totalCost++;
+            item.remove(DataComponentTypes.CUSTOM_NAME);
+        }
 
         var modifier = this.input.getStack(1);
         if (!modifier.isEmpty()) {
