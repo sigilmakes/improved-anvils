@@ -36,6 +36,12 @@ This mod seeks to fix these issues.
 
 ## Changes
 
+### 1.21
+
+Due to the nature of new enchantments, the mace enchantment costs may not be
+in the correct place for game balance.
+If you have suggestions, please let me know.
+
 ### General
 
 - Anvil costs do not accumulate from anvil usages.
@@ -62,7 +68,7 @@ This mod seeks to fix these issues.
 
 ### Repairing Items
 
-- Shovels can now be completely repaired using 1 material.
+- Maces and shovels can now be completely repaired using 1 material.
 - Swords and hoes repair 50% per material.
 - Axes and pickaxes repair 33% per material.
 - Everything else repairs 25% per material.

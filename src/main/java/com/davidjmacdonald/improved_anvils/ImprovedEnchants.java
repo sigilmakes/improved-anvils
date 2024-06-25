@@ -5,13 +5,16 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImprovedEnchants {
-    private static final Map<Enchantment, Integer> MAX_COSTS = new HashMap<>();
+    private static final Map<RegistryKey<Enchantment>, Integer> MAX_COSTS = new HashMap<>();
 
-    private static void putEnchant(Enchantment e, int maxCost) {
+    private static void putEnchant(RegistryKey<Enchantment> e, int maxCost) {
         MAX_COSTS.put(e, maxCost);
     }
 
@@ -39,6 +42,7 @@ public class ImprovedEnchants {
         putEnchant(Enchantments.SWIFT_SNEAK, 450);
         putEnchant(Enchantments.LOOTING, 400);
         putEnchant(Enchantments.DEPTH_STRIDER, 400);
+        putEnchant(Enchantments.WIND_BURST, 400);
         putEnchant(Enchantments.FORTUNE, 350);
         putEnchant(Enchantments.LOYALTY, 350);
         putEnchant(Enchantments.RESPIRATION, 350);
@@ -51,6 +55,7 @@ public class ImprovedEnchants {
         // 4 tiers
         putEnchant(Enchantments.PROTECTION, 450);
         putEnchant(Enchantments.FEATHER_FALLING, 450);
+        putEnchant(Enchantments.BREACH, 400);
         putEnchant(Enchantments.BLAST_PROTECTION, 350);
         putEnchant(Enchantments.PROJECTILE_PROTECTION, 300);
         putEnchant(Enchantments.FIRE_PROTECTION, 300);
@@ -58,6 +63,7 @@ public class ImprovedEnchants {
 
         // 5 tiers
         putEnchant(Enchantments.EFFICIENCY, 400);
+        putEnchant(Enchantments.DENSITY, 400);
         putEnchant(Enchantments.POWER, 350);
         putEnchant(Enchantments.SHARPNESS, 350);
         putEnchant(Enchantments.SMITE, 300);
@@ -65,8 +71,11 @@ public class ImprovedEnchants {
         putEnchant(Enchantments.BANE_OF_ARTHROPODS, 250);
     }
 
-    private static int getCost(Enchantment e, int level) {
-        return MAX_COSTS.getOrDefault(e, 300) * level / e.getMaxLevel();
+    private static int getCost(RegistryEntry<Enchantment> e, int level) {
+        if (e.getKey().isEmpty()) {
+            return 1000;
+        }
+        return MAX_COSTS.getOrDefault(e.getKey().get(), 300) * level / e.value().getMaxLevel();
     }
 
     private final ItemEnchantmentsComponent.Builder enchants;
@@ -75,7 +84,7 @@ public class ImprovedEnchants {
         this.enchants = new ItemEnchantmentsComponent.Builder(EnchantmentHelper.getEnchantments(item));
     }
 
-    public int add(Enchantment enchant, int level) {
+    public int add(RegistryEntry<Enchantment> enchant, int level) {
         var cost = getCost(enchant, level);
         var oldLevel = this.enchants.getLevel(enchant);
 
@@ -88,7 +97,7 @@ public class ImprovedEnchants {
             return cost;
         }
 
-        if (oldLevel > level || oldLevel >= enchant.getMaxLevel()) {
+        if (oldLevel > level || oldLevel >= enchant.value().getMaxLevel()) {
             return 0;
         }
 
@@ -96,21 +105,25 @@ public class ImprovedEnchants {
         return cost;
     }
 
-    public boolean has(Enchantment e) {
-        return this.enchants.getLevel(e) > 0;
+    public boolean has(RegistryKey<Enchantment> e) {
+        for (var entry : this.enchants.getEnchantments()) {
+            if (entry.getKey().isPresent() && entry.getKey().get().equals(e)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setEnchantments(ItemStack item) {
         EnchantmentHelper.set(item, this.enchants.build());
     }
 
-    private boolean canAdd(Enchantment e2) {
+    private boolean canAdd(RegistryEntry<Enchantment> e2) {
         for (var e1 : this.enchants.getEnchantments()) {
-            if (!e1.value().canCombine(e2)) {
+            if (e1.value().exclusiveSet().contains(e2)) {
                 return false;
             }
         }
-
         return true;
     }
 }

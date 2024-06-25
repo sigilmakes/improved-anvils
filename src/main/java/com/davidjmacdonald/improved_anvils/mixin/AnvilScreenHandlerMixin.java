@@ -211,7 +211,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     private double singleItemRepairPercent(ItemStack item) {
         var one = Set.of(
                 Items.WOODEN_SHOVEL, Items.STONE_SHOVEL, Items.GOLDEN_SHOVEL, Items.IRON_SHOVEL, Items.DIAMOND_SHOVEL, Items.NETHERITE_SHOVEL,
-                Items.SHIELD, Items.CROSSBOW, Items.FLINT_AND_STEEL
+                Items.SHIELD, Items.CROSSBOW, Items.FLINT_AND_STEEL, Items.MACE
         );
         if (one.contains(item.getItem())) {
             return 1.0;
@@ -251,9 +251,8 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var totalCost = 0;
 
         var modifierEnchants = EnchantmentHelper.getEnchantments(modifier);
-        for (var registry : modifierEnchants.getEnchantments()) {
-            var enchant = registry.value();
-            if (!isBook && !enchant.isAcceptableItem(item)) {
+        for (var enchant : modifierEnchants.getEnchantments()) {
+            if (!isBook && !enchant.value().isAcceptableItem(item)) {
                 continue;
             }
 
