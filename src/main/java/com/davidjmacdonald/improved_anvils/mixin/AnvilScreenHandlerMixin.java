@@ -1,6 +1,7 @@
 package com.davidjmacdonald.improved_anvils.mixin;
 
 import com.davidjmacdonald.improved_anvils.ImprovedEnchants;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -265,7 +266,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
 
         for (var entry : EnchantmentHelper.get(modifier).entrySet()) {
             var enchant = entry.getKey();
-            if (!isBook && !enchant.isAcceptableItem(item)) {
+            if (!isBook && !item.canBeEnchantedWith(enchant, EnchantingContext.ANVIL)) {
                 continue;
             }
 
