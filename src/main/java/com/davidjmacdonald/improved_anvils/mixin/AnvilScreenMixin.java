@@ -1,5 +1,6 @@
 package com.davidjmacdonald.improved_anvils.mixin;
 
+import com.davidjmacdonald.improved_anvils.ImprovedAnvils;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.ForgingScreen;
@@ -34,7 +35,8 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
      */
     @Overwrite
     public void drawForeground(DrawContext context, int mouseX, int mouseY) {
-        var title = Text.translatable("container.improved_anvils.repair", this.player.totalExperience);
+        var totalXP = ImprovedAnvils.getTotalPlayerXP(this.player);
+        var title = Text.translatable("container.improved_anvils.repair", totalXP);
         context.drawText(this.textRenderer, title, this.titleX, this.titleY, 0x404040, false);
         context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX, this.playerInventoryTitleY, 0x404040, false);
 

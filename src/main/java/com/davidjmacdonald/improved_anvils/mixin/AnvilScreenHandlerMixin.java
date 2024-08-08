@@ -1,5 +1,6 @@
 package com.davidjmacdonald.improved_anvils.mixin;
 
+import com.davidjmacdonald.improved_anvils.ImprovedAnvils;
 import com.davidjmacdonald.improved_anvils.ImprovedEnchants;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.block.AnvilBlock;
@@ -61,7 +62,8 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     @Overwrite
     public boolean canTakeOutput(PlayerEntity player, boolean present) {
         var cost = this.levelCost.get();
-        return cost > 0 && (player.isInCreativeMode() || player.totalExperience >= cost);
+        var totalXP = ImprovedAnvils.getTotalPlayerXP(player);
+        return cost > 0 && (player.isInCreativeMode() || totalXP >= cost);
     }
 
     @Inject(method = "onTakeOutput", at = @At("HEAD"), cancellable = true)
