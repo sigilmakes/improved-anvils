@@ -162,7 +162,14 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     @Unique
     private boolean canRepairItem(ItemStack item, ItemStack modifier) {
         if (NETHERITE_ITEMS.contains(item.getItem())) {
-            return modifier.isOf(Items.DIAMOND);
+            var gameRule = ImprovedAnvils.REPAIR_NETHERITE_WITH_DIAMONDS;
+            return this.context.get((world, pos) -> {
+                if (world.getGameRules().getBoolean(gameRule)) {
+                    return modifier.isOf(Items.DIAMOND);
+                } else {
+                    return modifier.isOf(Items.NETHERITE_INGOT);
+                }
+            }).orElse(false);
         }
 
         var ironRepairableItems = Set.of(Items.SHIELD, Items.CROSSBOW, Items.FLINT_AND_STEEL, Items.SHEARS);
