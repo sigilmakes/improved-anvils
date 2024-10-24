@@ -162,14 +162,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     @Unique
     private boolean canRepairItem(ItemStack item, ItemStack modifier) {
         if (NETHERITE_ITEMS.contains(item.getItem())) {
-            var gameRule = ImprovedAnvils.REPAIR_NETHERITE_WITH_DIAMONDS;
-            return this.context.get((world, pos) -> {
-                if (world.getGameRules().getBoolean(gameRule)) {
-                    return modifier.isOf(Items.DIAMOND);
-                } else {
-                    return modifier.isOf(Items.NETHERITE_INGOT);
-                }
-            }).orElse(false);
+            return modifier.isOf(canRepairNetheriteWithDiamonds() ? Items.DIAMOND : Items.NETHERITE_INGOT);
         }
 
         var ironRepairableItems = Set.of(Items.SHIELD, Items.CROSSBOW, Items.FLINT_AND_STEEL, Items.SHEARS);
@@ -204,11 +197,9 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var maxRepairs = modifier.getCount();
 
         var singleRepair = singleItemRepairPercent(item) * maxHealth;
-        singleRepair /= this.context.get((world, pos) -> {
-            var gameRule = ImprovedAnvils.REPAIR_NETHERITE_WITH_DIAMONDS;
-            var gameRuleSet = world.getGameRules().getBoolean(gameRule);
-            return (gameRuleSet && NETHERITE_ITEMS.contains(item.getItem())) ? 2 : 1;
-        }).orElse(1);
+        if (NETHERITE_ITEMS.contains(item.getItem()) && canRepairNetheriteWithDiamonds()) {
+            singleRepair /= 2;
+        }
 
         if (modifier.isOf(Items.IRON_NUGGET) || modifier.isOf(Items.GOLD_NUGGET)) {
             singleRepair /= 9;
@@ -298,6 +289,14 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         item.setDamage(maxHealth - newHealth);
         var costFactor = (isItemInfinityBow(item) || isItemInfinityBow(modifier)) ? 4 : 1;
         return totalCost + (int) Math.ceil(costFactor * (newHealth - health) / 4.0);
+    }
+
+    @Unique
+    private boolean canRepairNetheriteWithDiamonds() {
+        return this.context.get((world, pos) -> {
+            var gameRule = ImprovedAnvils.REPAIR_NETHERITE_WITH_DIAMONDS;
+            return world.getGameRules().getBoolean(gameRule);
+        }).orElse(false);
     }
 }
 
