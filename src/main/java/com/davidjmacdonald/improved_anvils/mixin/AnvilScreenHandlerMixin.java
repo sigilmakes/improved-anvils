@@ -204,9 +204,11 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var maxRepairs = modifier.getCount();
 
         var singleRepair = singleItemRepairPercent(item) * maxHealth;
-        if (NETHERITE_ITEMS.contains(item.getItem())) {
-            singleRepair /= 2;
-        }
+        singleRepair /= this.context.get((world, pos) -> {
+            var gameRule = ImprovedAnvils.REPAIR_NETHERITE_WITH_DIAMONDS;
+            var gameRuleSet = world.getGameRules().getBoolean(gameRule);
+            return (gameRuleSet && NETHERITE_ITEMS.contains(item.getItem())) ? 2 : 1;
+        }).orElse(1);
 
         if (modifier.isOf(Items.IRON_NUGGET) || modifier.isOf(Items.GOLD_NUGGET)) {
             singleRepair /= 9;
