@@ -76,6 +76,7 @@ If you have suggestions, please let me know.
 
 
 - Netherite items are now repaired using diamonds, for twice as many diamonds as the equivalent diamond item.
+    - This can be reverted to vanilla by setting the gamerule `repairNetheriteWithDiamonds` to `false`.
 - Shields, Crossbows, and Flint & Steel can now be repaired using iron ingots; 100% per material.
 - Shears can now be repaired using iron ingots; 50% per material.
 - Tridents can now be repaired using nautilus shells; 25% per material.
@@ -91,6 +92,12 @@ If you have suggestions, please let me know.
 ### Renaming Items
 
 - Renaming simply costs 1 XP.
+
+### Customization Options
+
+- Gamerule `repairNetheriteWithDiamonds`:
+    - `true` (default): Netherite tools/armor can be repaired using diamonds and diamonds alone.
+    - `false`: Netherite tools/armor can be repaired using netherite ingots and netherite ingots alone.
 
 ## Credit
 
