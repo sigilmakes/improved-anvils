@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.*;
+import net.minecraft.screen.slot.ForgingSlotsManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.StringHelper;
 import net.minecraft.world.WorldEvents;
@@ -50,9 +51,10 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
             @Nullable ScreenHandlerType<?> type,
             int syncId,
             PlayerInventory playerInventory,
-            ScreenHandlerContext context
+            ScreenHandlerContext context,
+            ForgingSlotsManager forgingSlotsManager
     ) {
-        super(type, syncId, playerInventory, context);
+        super(type, syncId, playerInventory, context, forgingSlotsManager);
     }
 
     /**
@@ -180,14 +182,14 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         }
 
         if (modifier.isOf(Items.GOLD_NUGGET)) {
-            return item.getItem().canRepair(item, Items.GOLD_INGOT.getDefaultStack());
+            return item.canRepairWith(Items.GOLD_INGOT.getDefaultStack());
         }
 
         if (modifier.isOf(Items.IRON_NUGGET)) {
-            return item.getItem().canRepair(item, Items.IRON_INGOT.getDefaultStack());
+            return item.canRepairWith(Items.IRON_INGOT.getDefaultStack());
         }
 
-        return item.getItem().canRepair(item, modifier);
+        return item.canRepairWith(modifier);
     }
 
     @Unique
@@ -294,8 +296,16 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     @Unique
     private boolean canRepairNetheriteWithDiamonds() {
         return this.context.get((world, pos) -> {
-            var gameRule = ImprovedAnvils.REPAIR_NETHERITE_WITH_DIAMONDS;
-            return world.getGameRules().getBoolean(gameRule);
+            final var gameRule = ImprovedAnvils.REPAIR_NETHERITE_WITH_DIAMONDS;
+            final var logger = ImprovedAnvils.LOGGER;
+
+            final var server = world.getServer();
+            if (server == null) {
+                logger.error("cannot get game server to check game rules!");
+                return false;
+            }
+
+            return server.getGameRules().getBoolean(gameRule);
         }).orElse(false);
     }
 }
