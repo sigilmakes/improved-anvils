@@ -13,7 +13,7 @@ build:
   only:
     - /^v\d+\.\d+\.\d+.*$/
   stage: build
-  image: gradle:jdk17
+  image: gradle:jdk21
   script:
     - chmod +x ./gradlew
     - ./gradlew build
