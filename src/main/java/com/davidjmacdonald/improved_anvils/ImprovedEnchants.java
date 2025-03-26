@@ -20,62 +20,62 @@ public class ImprovedEnchants {
 
     static {
         // 1 tier
-        putEnchant(Enchantments.MENDING, 550);
-        putEnchant(Enchantments.INFINITY, 400);
-        putEnchant(Enchantments.CHANNELING, 350);
-        putEnchant(Enchantments.SILK_TOUCH, 350);
-        putEnchant(Enchantments.FLAME, 300);
-        putEnchant(Enchantments.AQUA_AFFINITY, 300);
-        putEnchant(Enchantments.MULTISHOT, 250);
-        putEnchant(Enchantments.VANISHING_CURSE, 200);
-        putEnchant(Enchantments.BINDING_CURSE, 200);
+        putEnchant(Enchantments.MENDING, 100);
+        putEnchant(Enchantments.INFINITY, 100);
+        putEnchant(Enchantments.CHANNELING, 100);
+        putEnchant(Enchantments.SILK_TOUCH, 100);
+        putEnchant(Enchantments.FLAME, 100);
+        putEnchant(Enchantments.AQUA_AFFINITY, 100);
+        putEnchant(Enchantments.MULTISHOT, 100);
+        putEnchant(Enchantments.VANISHING_CURSE, 10);
+        putEnchant(Enchantments.BINDING_CURSE, 10);
 
         // 2 tiers
-        putEnchant(Enchantments.FROST_WALKER, 400);
-        putEnchant(Enchantments.FIRE_ASPECT, 300);
-        putEnchant(Enchantments.KNOCKBACK, 250);
-        putEnchant(Enchantments.PUNCH, 250);
+        putEnchant(Enchantments.FROST_WALKER, 10);
+        putEnchant(Enchantments.FIRE_ASPECT, 100);
+        putEnchant(Enchantments.KNOCKBACK, 100);
+        putEnchant(Enchantments.PUNCH, 100);
 
         // 3 tiers
-        putEnchant(Enchantments.UNBREAKING, 500);
-        putEnchant(Enchantments.SOUL_SPEED, 450);
-        putEnchant(Enchantments.SWIFT_SNEAK, 450);
-        putEnchant(Enchantments.LOOTING, 400);
-        putEnchant(Enchantments.DEPTH_STRIDER, 400);
-        putEnchant(Enchantments.WIND_BURST, 400);
-        putEnchant(Enchantments.FORTUNE, 350);
-        putEnchant(Enchantments.LOYALTY, 350);
-        putEnchant(Enchantments.RESPIRATION, 350);
-        putEnchant(Enchantments.QUICK_CHARGE, 350);
-        putEnchant(Enchantments.SWEEPING_EDGE, 350);
-        putEnchant(Enchantments.THORNS, 300);
-        putEnchant(Enchantments.LUCK_OF_THE_SEA, 300);
-        putEnchant(Enchantments.LURE, 300);
+        putEnchant(Enchantments.UNBREAKING, 100);
+        putEnchant(Enchantments.SOUL_SPEED, 100);
+        putEnchant(Enchantments.SWIFT_SNEAK, 100);
+        putEnchant(Enchantments.LOOTING, 100);
+        putEnchant(Enchantments.DEPTH_STRIDER, 100);
+        putEnchant(Enchantments.WIND_BURST, 100);
+        putEnchant(Enchantments.FORTUNE, 100);
+        putEnchant(Enchantments.LOYALTY, 100);
+        putEnchant(Enchantments.RESPIRATION, 100);
+        putEnchant(Enchantments.QUICK_CHARGE, 100);
+        putEnchant(Enchantments.SWEEPING_EDGE, 100);
+        putEnchant(Enchantments.THORNS, 100);
+        putEnchant(Enchantments.LUCK_OF_THE_SEA, 100);
+        putEnchant(Enchantments.LURE, 100);
 
         // 4 tiers
-        putEnchant(Enchantments.PROTECTION, 450);
-        putEnchant(Enchantments.FEATHER_FALLING, 450);
-        putEnchant(Enchantments.BREACH, 400);
-        putEnchant(Enchantments.BLAST_PROTECTION, 350);
-        putEnchant(Enchantments.PROJECTILE_PROTECTION, 300);
-        putEnchant(Enchantments.FIRE_PROTECTION, 300);
-        putEnchant(Enchantments.PIERCING, 250);
+        putEnchant(Enchantments.PROTECTION, 100);
+        putEnchant(Enchantments.FEATHER_FALLING, 100);
+        putEnchant(Enchantments.BREACH, 100);
+        putEnchant(Enchantments.BLAST_PROTECTION, 100);
+        putEnchant(Enchantments.PROJECTILE_PROTECTION, 100);
+        putEnchant(Enchantments.FIRE_PROTECTION, 100);
+        putEnchant(Enchantments.PIERCING, 100);
 
         // 5 tiers
-        putEnchant(Enchantments.EFFICIENCY, 400);
-        putEnchant(Enchantments.DENSITY, 400);
-        putEnchant(Enchantments.POWER, 350);
-        putEnchant(Enchantments.SHARPNESS, 350);
-        putEnchant(Enchantments.SMITE, 300);
-        putEnchant(Enchantments.IMPALING, 300);
-        putEnchant(Enchantments.BANE_OF_ARTHROPODS, 250);
+        putEnchant(Enchantments.EFFICIENCY, 100);
+        putEnchant(Enchantments.DENSITY, 100);
+        putEnchant(Enchantments.POWER, 100);
+        putEnchant(Enchantments.SHARPNESS, 100);
+        putEnchant(Enchantments.SMITE, 100);
+        putEnchant(Enchantments.IMPALING, 100);
+        putEnchant(Enchantments.BANE_OF_ARTHROPODS, 100);
     }
 
     private static int getCost(RegistryEntry<Enchantment> e, int level) {
         if (e.getKey().isEmpty()) {
             return 1000;
         }
-        return MAX_COSTS.getOrDefault(e.getKey().get(), 300) * level / e.value().getMaxLevel();
+        return MAX_COSTS.getOrDefault(e.getKey().get(), 150) * level / e.value().getMaxLevel();
     }
 
     private final ItemEnchantmentsComponent.Builder enchants;

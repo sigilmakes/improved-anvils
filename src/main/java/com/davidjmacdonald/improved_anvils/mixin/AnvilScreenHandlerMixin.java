@@ -178,7 +178,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         }
 
         if (item.isOf(Items.TRIDENT)) {
-            return modifier.isOf(Items.NAUTILUS_SHELL);
+            return modifier.isOf(Items.PRISMARINE_SHARD);
         }
 
         if (modifier.isOf(Items.GOLD_NUGGET)) {
