@@ -1,6 +1,8 @@
-# Improved Anvils
+# Improved Anvils - LemonEater's Personal Fork
 
 Removes "TOO EXPENSIVE" and re-balances enchantment/repair costs of anvils.
+This is a personal fork of the mod, all credit and copyright goes to the original author David J MacDonald.
+See the LICENSE file for more details.
 
 ## Installation
 
@@ -51,12 +53,7 @@ If you have suggestions, please let me know.
 ### Enchanting Items
 
 - Enchantment cost is fixed per enchantment, per tier of the enchantment.
-  Enchantments that are more "rare" or more over-powered are more expensive.
-  Examples:
-    - Mending, the most OP enchantment, costs 550 XP (level 0 to level 20).
-    - Protection, objectively better for armor, costs 112.5 XP per tier. Protection IV costs 450 XP.
-    - Fortune, a solid enchantment, costs 116.7 XP per tier. Fortune III costs 350 XP.
-    - Bane of Arthropods, a niche enchantment, costs 50 XP per tier. Bane of Arthropods V costs 250 XP.
+- Enchantment costs max out at 100xp for vanilla enchantments, and 150xp for any additional enchantments
 
 ### Combining Items
 
@@ -79,7 +76,7 @@ If you have suggestions, please let me know.
     - This can be reverted to vanilla by setting the gamerule `repairNetheriteWithDiamonds` to `false`.
 - Shields, Crossbows, and Flint & Steel can now be repaired using iron ingots; 100% per material.
 - Shears can now be repaired using iron ingots; 50% per material.
-- Tridents can now be repaired using nautilus shells; 25% per material.
+- Tridents can now be repaired using prismarine shards; 25% per material.
 - Fishing rods, Carrot on a stick, and Warped fungus on a stick can now be repaired using string; 50% per material.
 - Bows can now be repaired using string; 33% per material.
     - If the bow has Infinity, to balance it with Mending,
