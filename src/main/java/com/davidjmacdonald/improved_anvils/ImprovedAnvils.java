@@ -13,11 +13,12 @@ public class ImprovedAnvils implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final GameRules.Key<GameRules.BooleanRule> REPAIR_NETHERITE_WITH_DIAMONDS =
-            GameRuleRegistry.register(
-                    "repairNetheriteWithDiamonds",
-                    GameRules.Category.MISC,
-                    GameRuleFactory.createBooleanRule(true)
-            );
+        GameRuleRegistry.register(
+            "repairNetheriteWithDiamonds",
+            GameRules.Category.MISC,
+            GameRuleFactory.createBooleanRule(true)
+        );
+    
 
     public static int getTotalPlayerXP(PlayerEntity player) {
         var level = player.experienceLevel;
