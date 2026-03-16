@@ -66,26 +66,25 @@ If you have suggestions, please let me know.
 
 ### Repairing Items
 
-- Maces and shovels can now be completely repaired using 1 material.
-- Swords and hoes repair 50% per material.
-- Axes and pickaxes repair 33% per material.
-- Everything else repairs 25% per material.
-- The cost of a repair is 1 XP per 4 durability added (half the cost of Mending).
+Repair cost is **1 XP per 4 durability** restored (half the cost of Mending).
 
+| Item | Material | Repair % |
+|------|----------|----------|
+| Shovels, Maces | Standard | 100% |
+| Shields, Crossbows, Flint & Steel | Iron Ingot | 100% |
+| Swords, Hoes | Standard | 50% |
+| Shears | Iron Ingot | 50% |
+| Fishing Rods, Carrot on a Stick, Warped Fungus on a Stick | String | 50% |
+| Axes, Pickaxes | Standard | 33% |
+| Bows | String | 33% |
+| Tridents | Prismarine Shard | 25% |
+| Everything else | Standard | 25% |
 
-- Netherite items are now repaired using diamonds, for twice as many diamonds as the equivalent diamond item.
-    - This can be reverted to vanilla by setting the gamerule `repairNetheriteWithDiamonds` to `false`.
-- Shields, Crossbows, and Flint & Steel can now be repaired using iron ingots; 100% per material.
-- Shears can now be repaired using iron ingots; 50% per material.
-- Tridents can now be repaired using prismarine shards; 25% per material.
-- Fishing rods, Carrot on a stick, and Warped fungus on a stick can now be repaired using string; 50% per material.
-- Bows can now be repaired using string; 33% per material.
-    - If the bow has Infinity, to balance it with Mending,
-      the cost of the repair will be 1 XP per 1 durability added (twice the cost of Mending).
+**Netherite:** Repaired with diamonds at half the repair rate (e.g. a netherite shovel takes 2 diamonds for full repair instead of 1). Set gamerule `repairNetheriteWithDiamonds` to `false` to revert to vanilla netherite ingot repairs.
 
+**Nuggets:** Any item repairable with iron or gold ingots can also use nuggets at 1/9th the durability per nugget.
 
-- Any tool that can be repaired using iron or gold ingots can be repaired using nuggets for 1/9th as much durability per
-  material.
+**Infinity bows:** Repair cost increases to 1 XP per 1 durability (4× normal) to balance against Mending.
 
 ### Renaming Items
 
