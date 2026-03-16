@@ -1,17 +1,18 @@
-# Improved Anvils - LemonEater's Personal Fork
+# Improved Anvils
 
+A personal fork of [Improved Anvils](https://gitlab.com/DavidJMacDonald/improved-anvils) by David J MacDonald.
 Removes "TOO EXPENSIVE" and re-balances enchantment/repair costs of anvils.
-This is a personal fork of the mod, all credit and copyright goes to the original author David J MacDonald.
-See the LICENSE file for more details.
+
+All credit and copyright for the original mod goes to David — see the [LICENSE](LICENSE) for details.
+
+**Current version:** 1.1.2 for Minecraft 1.21.10 (Fabric)
 
 ## Installation
 
-This mod must be installed on the server.
+Requires [Fabric API](https://modrinth.com/mod/fabric-api). Must be installed on the server.
 
-If you do not install it on the client, you will still see "TOO EXPENSIVE",
-but it will not prevent you from performing the action if you have the XP to do it.
-
-The Fabric API is required.
+If not installed on the client, you'll still see "TOO EXPENSIVE",
+but it won't prevent the action if you have the XP.
 
 ## Purpose
 
