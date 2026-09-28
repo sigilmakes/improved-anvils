@@ -13,11 +13,11 @@ build:
   only:
     - /^v\d+\.\d+\.\d+.*$/
   stage: build
-  image: gradle:jdk21
+  image: eclipse-temurin:25-jdk
   script:
     - chmod +x ./gradlew
     - ./gradlew build
-    - cp $(find build/libs -name "*.jar" -print -quit) ${APP_NAME}
+    - cp build/libs/Improved_Anvils-1.1.2-26.2.jar "${APP_NAME}"
   artifacts:
     paths:
       - ${APP_NAME}

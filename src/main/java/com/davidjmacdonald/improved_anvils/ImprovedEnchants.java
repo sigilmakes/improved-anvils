@@ -1,20 +1,20 @@
 package com.davidjmacdonald.improved_anvils;
 
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Holder;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ImprovedEnchants {
-    private static final Map<RegistryKey<Enchantment>, Integer> MAX_COSTS = new HashMap<>();
+    private static final Map<ResourceKey<Enchantment>, Integer> MAX_COSTS = new HashMap<>();
 
-    private static void putEnchant(RegistryKey<Enchantment> e, int maxCost) {
+    private static void putEnchant(ResourceKey<Enchantment> e, int maxCost) {
         MAX_COSTS.put(e, maxCost);
     }
 
@@ -71,20 +71,20 @@ public class ImprovedEnchants {
         putEnchant(Enchantments.BANE_OF_ARTHROPODS, 100);
     }
 
-    private static int getCost(RegistryEntry<Enchantment> e, int level) {
-        if (e.getKey().isEmpty()) {
+    private static int getCost(Holder<Enchantment> e, int level) {
+        if (e.unwrapKey().isEmpty()) {
             return 1000;
         }
-        return MAX_COSTS.getOrDefault(e.getKey().get(), 150) * level / e.value().getMaxLevel();
+        return MAX_COSTS.getOrDefault(e.unwrapKey().get(), 150) * level / e.value().getMaxLevel();
     }
 
-    private final ItemEnchantmentsComponent.Builder enchants;
+    private final ItemEnchantments.Mutable enchants;
 
     public ImprovedEnchants(ItemStack item) {
-        this.enchants = new ItemEnchantmentsComponent.Builder(EnchantmentHelper.getEnchantments(item));
+        this.enchants = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(item));
     }
 
-    public int add(RegistryEntry<Enchantment> enchant, int level) {
+    public int add(Holder<Enchantment> enchant, int level) {
         var cost = getCost(enchant, level);
         var oldLevel = this.enchants.getLevel(enchant);
 
@@ -105,9 +105,9 @@ public class ImprovedEnchants {
         return cost;
     }
 
-    public boolean has(RegistryKey<Enchantment> e) {
-        for (var entry : this.enchants.getEnchantments()) {
-            if (entry.getKey().isPresent() && entry.getKey().get().equals(e)) {
+    public boolean has(ResourceKey<Enchantment> e) {
+        for (var entry : this.enchants.keySet()) {
+            if (entry.unwrapKey().isPresent() && entry.unwrapKey().get().equals(e)) {
                 return true;
             }
         }
@@ -115,11 +115,11 @@ public class ImprovedEnchants {
     }
 
     public void setEnchantments(ItemStack item) {
-        EnchantmentHelper.set(item, this.enchants.build());
+        EnchantmentHelper.setEnchantments(item, this.enchants.toImmutable());
     }
 
-    private boolean canAdd(RegistryEntry<Enchantment> e2) {
-        for (var e1 : this.enchants.getEnchantments()) {
+    private boolean canAdd(Holder<Enchantment> e2) {
+        for (var e1 : this.enchants.keySet()) {
             if (e1.value().exclusiveSet().contains(e2)) {
                 return false;
             }

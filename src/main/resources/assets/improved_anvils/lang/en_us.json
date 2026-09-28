@@ -1,0 +1,6 @@
+{
+    "container.improved_anvils.repair": "Available: %d XP",
+    "container.improved_anvils.repair.cost": "Cost: %d XP",
+    "gamerule.repairNetheriteWithDiamonds": "Repair Netherite With Diamonds",
+    "gamerule.improved_anvils.repair_netherite_with_diamonds": "Repair Netherite With Diamonds"
+}

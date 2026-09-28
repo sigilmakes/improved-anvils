@@ -5,7 +5,7 @@ Removes "TOO EXPENSIVE" and re-balances enchantment/repair costs of anvils.
 
 All credit and copyright for the original mod goes to David — see the [LICENSE](LICENSE) for details.
 
-**Current version:** 1.1.2 for Minecraft 1.21.10 (Fabric)
+**Current version:** 1.1.2 for Minecraft 26.2 (Fabric)
 
 ## Installation
 
@@ -100,3 +100,51 @@ Repair cost is **1 XP per 4 durability** restored (half the cost of Mending).
 
 This mod was heavily inspired by [AnvilFix](https://github.com/googleooer/AnvilFix).
 
+
+## Building and testing (26.2)
+
+The pinned toolchain is Java 25, Fabric Loom 1.17.21, Gradle 9.6.0,
+Fabric Loader 0.19.5, and Fabric API 0.161.0+26.2. Minecraft 26.2 is
+unobfuscated; this project uses the official names, not Yarn mappings.
+
+On x86_64 Linux with Nix:
+
+```sh
+nix develop path:. -c ./gradlew clean build
+nix flake check path:.
+```
+
+The in-repo `flake.nix` and `flake.lock` supply a pinned Java 25 environment.
+They do not change the host configuration. The Gradle wrapper downloads Gradle
+and project dependencies. This is a development/build shell, not an offline
+`nix build` package. Without Nix, install Java 25 and run `./gradlew clean build`.
+The distributable is `build/libs/Improved_Anvils-1.1.2-26.2.jar` (not `-sources.jar`).
+
+`build` runs repair/XP arithmetic regression checks, Fabric Loader JUnit tests
+with runtime mixin transformation, and a JAR-content check. These do not replace
+an in-game client/server smoke test. Sources use the standard `src/main/java`,
+`src/client/java`, and `src/main/resources` directories.
+
+### Gamerule migration
+
+26.x stores gamerules as registry identifiers. The canonical name is now
+`improved_anvils:repair_netherite_with_diamonds`, still **true by default**.
+The original command remains an alias:
+
+```mcfunction
+/gamerule repairNetheriteWithDiamonds false
+/gamerule improved_anvils:repair_netherite_with_diamonds false
+```
+
+The saved legacy `repairNetheriteWithDiamonds` string is converted to the
+canonical boolean during game-rule decoding. Both `true` and `false` are
+preserved; an existing canonical value takes precedence. Back up worlds before
+upgrading. Upgrade with this mod installed: a world already saved by 26.x
+without this mod may have lost its unknown custom rule, which cannot be
+recovered automatically. Check the rule after upgrading.
+
+### Port references
+
+- [Fabric 26.2 port guide](https://fabricmc.net/2026/06/15/262.html)
+- [Fabric automated testing](https://docs.fabricmc.net/develop/automatic-testing)
+- [Mojang version metadata](https://piston-meta.mojang.com/mc/game/version_manifest_v2.json)
